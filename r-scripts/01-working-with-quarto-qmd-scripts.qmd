@@ -6,6 +6,8 @@ format: html
 editor: 
   markdown: 
     wrap: 72
+editor_options: 
+  chunk_output_type: console
 ---
 
 # Working with Quarto documents in R
@@ -91,20 +93,28 @@ B <- 10
 C <- A + B
 # print the result
 print(C)
+# calculate the mean of the number 1, 3, 7, 12, 46
+my_numbers <- c(1, 3, 7, 12, 46)
+mean(my_numbers)
+base::mean(my_nummbers) # use function mean from package base
 ```
 
+The sum of 10 and 5 is 15
+Then make a plot
+```{r, message = FALSE, warning = FALSE} 
+# by adding message = FALSE, warning = FALSE, you keep text clean
+#| label: fig-histogram # name of figure to identify it later and refer to it
+#| fig-cap: Histogram of 100 random values from a normal distribution with 0 mean and 1 standard deviation # caption of the figure with description
 
-```{r, message = FALSE, warning = FALSE}
-#| label: fig-histogram
-#| fig-cap: Histogram of 100 random values from a normal distribution with 0 mean and 1 standard deviation
-
-library(tidyverse)
+library(tidyverse) # Library is your bookshelf where you can load packages. Install package where ggplot is
 # set the seed of the random number generator (gives same result)
 set.seed(123)
 # generate 100 random values form a normal distribution with mean=0 and standard deviation 1
 randomvalue <- rnorm(n = 100, mean = 0, sd = 1)
+mean(randomvalue)
 # convert to a dataframe
 data1<-data.frame(randomvalue)
+print(data1) # print shows dataset you have calculated
 # plot as a histogram
 ggplot2::ggplot(data=data1, 
                 mapping=aes(x=randomvalue)) +
