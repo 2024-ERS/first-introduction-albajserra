@@ -1,0 +1,26 @@
+---
+title: "FactVegCompImportDataSetExample"
+format: html
+editor: "Alba"
+---
+
+```{r}
+#| label: load-libraries
+#| output: false  
+library(tidyverse) # load the tidyverse libraries, including readr
+```
+```{r}
+#| label: read-google-sheets-data
+
+FactVegComp_link<-"https://docs.google.com/spreadsheets/d/18G3rKbP3DUE5tXVUItqcpEjxzNlcmrvsjUgtpLXQpWE/pub?gid=1988760156&single=true&output=csv"
+FactVegComp<-read_csv(FactVegComp_link)
+print(FactVegComp)
+```
+```{r}
+#| label: fig-boxplot
+#| fig-cap: Boxplot of the number of individuals observed for each species. 
+
+ggplot(data=FactVegComp, 
+       mapping=aes(x=Species_ID,y=CoverPerc)) +
+  geom_boxplot()
+```
