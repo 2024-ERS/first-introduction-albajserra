@@ -39,8 +39,8 @@ simple, human-readable way. It is a simple way to format headers, tables
 etc for still a simple text document, such as this text, using plain
 text formatting. Files have the .md extension. For example, the '\#' in
 front of the first line of this document indicates that it is a title,
-and needs to be formatted like that. If you add "\###" it will become a
-subheader. If you switch this window of this text to the tab "visual"
+and needs to be formatted like that. If you add "\###" it will become
+asubheader. If you switch this window of this text to the tab "visual"
 you see what happens. Markdown is lightweight eg compared to html (how
 most internet pages are written), which allows much more formatting, and
 makes files practically not readable anymore with a regular text editor.
@@ -83,25 +83,28 @@ indicating in which language it is written, then some execution options
 starting with #\| and then the script itself. This code chunk can be run
 as a block of code by using the small green arrow at the top right.
 
-Make a simple code block using "```{r}"
+Make a simple code block using "\`\`\`{r}"
+
 ```{r}
 # define a variable A and assign the value 5 to it
 A <- 5
-# same for a variable
+# same for a variable B
 B <- 10
 # calculate the sum of A and B and call it C
 C <- A + B
 # print the result
 print(C)
-# calculate the mean of the number 1, 3, 7, 12, 46
-my_numbers <- c(1, 3, 7, 12, 46)
+# calculate the mean of the numbers 1, 3, 7, 12,46
+my_numbers<-c(1, 3, 7, 12,46)
 mean(my_numbers)
-base::mean(my_numbers) # use function mean from package base
+base::mean(my_numbers)  # use function mean from package base
 ```
 
 The sum of 10 and 5 is 15
+
 Then make a plot
-```{r, message = FALSE, warning = FALSE} 
+
+```{r, message = FALSE, warning = FALSE}
 # by adding message = FALSE, warning = FALSE, you keep text clean
 #| label: fig-histogram # name of figure to identify it later and refer to it
 #| fig-cap: Histogram of 100 random values from a normal distribution with 0 mean and 1 standard deviation # caption of the figure with description
@@ -115,7 +118,8 @@ mean(randomvalue)
 # convert to a dataframe
 data1<-data.frame(randomvalue)
 print(data1) # print shows dataset you have calculated
-# plot as a histogram
+# plot as a histogram with axis labels
+
 ggplot2::ggplot(data=data1, 
                 mapping=aes(x=randomvalue)) +
   geom_histogram()
@@ -123,7 +127,7 @@ ggplot2::ggplot(data=data1,
 ```
 
 So the text
-"\`\`\``{r}" indicates that you start with a code chunk, and "`\`\`\`"
+\`\`\``{r} indicates that you start with a code chunk, and`\`\`\`
 completes it. use the quote that is typically the key below your \<esc\>
 key on your keyboard. To keep your output document clean, you can add
 options to messages and warnings (only add when your codes works well)
@@ -170,7 +174,7 @@ set if you want different aspects as the code itself, the output from
 that code, warnings, etc in the output document.
 
 | Execute option: | Descript                                                                                                                                                                                    |
-|-------------|-----------------------------------------------------------|
+|-----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | eval            | Evaluate the code chunk (if false, just echos the code into the output). echo Include the source code in output                                                                             |
 | output          | Include the results of executing the code in the output (true, false, or asis to indicate that the output is raw markdown and should not have any of Quarto’s standard enclosing markdown). |
 | warning         | Include warnings in the output.                                                                                                                                                             |
@@ -182,7 +186,7 @@ that code, warnings, etc in the output document.
 Quarto syntax can also be used to generate equations as a Latex math
 expression, for example
 
-$$E = mc^{2}$$ # $ shows formatted formula
+$$E = mc^{2}$$
 
 Or, the cumulative distribution function of a normal distribution as
 given by:
