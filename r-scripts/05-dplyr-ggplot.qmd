@@ -1,11 +1,13 @@
 ---
 title: "Starting with with the dplyr, ggplot2 packages, and the pipe operator |>"
-author: "Han Olff"
+author: "Han Olff - changed by Alba"
 date: "2024-08-29"
 format: html
 editor: 
   markdown: 
     wrap: 72
+editor_options: 
+  chunk_output_type: console
 ---
 
 # Working with the dplyr and ggplot2 packages
@@ -13,6 +15,8 @@ editor:
 Load the required libraries :
 
 ```{r message = FALSE, warning = FALSE}
+# restore your library (keep at the start of every script)
+renv::restore()
 # clear the R environment
 rm(list = ls())
 
@@ -40,8 +44,14 @@ csv.
 Read the FactCockleSize table with read_csv, which reads it as tibble
 (formatted dataframe)
 
+You can also use the function read.csv() it will print the first 10 rows
+of your data set with all rows.
+
 ```{r}
 FactCockleSize <- readr::read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vSpormjGiM4uWMTIZYm9Upt5j1Ige_Wu9CrhGGdvjXwxmHP2R6S7JDyEmiGTn3fXihl5s5yBn_sdo8h/pub?gid=1538766002&single=true&output=csv")
+print(FactCockleSize) # to show contents of data
+names(FactCockleSize) # names of variables
+nrow(FactCockleSize) # number of rows
 ```
 
 Plot with ggplot the relation between cockle thickness (thickness_mm, as
@@ -49,7 +59,19 @@ x) and length (length_mm), showing each year with a different color, and
 add a regression line through all the years
 
 ```{r}
-
+ggplot2::ggplot(data=FactCockleSize, # what data you're using
+                mapping=aes(x=length_mm,y=thickness_mm)) + # what is on the axis
+  geom_point()
+# there is a big outlier, likely a data entry mistake, remove it
+  FactCockleSize |> dplyr::filter(thickness_mm>500)
+  
+  FactCockleSize <- readr::read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vSpormjGiM4uWMTIZYm9Upt5j1Ige_Wu9CrhGGdvjXwxmHP2R6S7JDyEmiGTn3fXihl5s5yBn_sdo8h/pub?gid=1538766002&single=true&output=csv") |> dplyr::filter(CockleObs_ID!=1531, CockleObs_ID!=469) # when ID of cockle outliers identified, remove them
+#plot the data
+  ggplot2::ggplot(data=FactCockleSize,
+                mapping=aes(x=length_mm,y=thickness_mm)) + geom_point()
+#find that other outlier
+  FactCockleSize |> dplyr::filter(thickness_mm>10 & length_mm<5)
+# also remove 469 above
 ```
 
 Further explore the plot with a regression line through all the data
