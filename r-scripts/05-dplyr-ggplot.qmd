@@ -67,29 +67,72 @@ ggplot2::ggplot(data=FactCockleSize, # what data you're using
 # there is a big outlier, likely a data entry mistake, remove it
   FactCockleSize |> dplyr::filter(thickness_mm>500)
   
-  FactCockleSize <- readr::read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vSpormjGiM4uWMTIZYm9Upt5j1Ige_Wu9CrhGGdvjXwxmHP2R6S7JDyEmiGTn3fXihl5s5yBn_sdo8h/pub?gid=1538766002&single=true&output=csv") |> dplyr::filter(CockleObs_ID!=1531, CockleObs_ID!=469) # when ID of cockle outliers identified, remove them
-#plot the data
+  FactCockleSize <- readr::read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vSpormjGiM4uWMTIZYm9Upt5j1Ige_Wu9CrhGGdvjXwxmHP2R6S7JDyEmiGTn3fXihl5s5yBn_sdo8h/pub?gid=1538766002&single=true&output=csv") |> # means pipe
+    dplyr::filter(CockleObs_ID!=1531, CockleObs_ID!=469) |> # filter = select particular rows. When ID of cockle outliers identified, remove them
+    dplyr::mutate(year=factor(year)) # make a year factor
+# plot the data
   ggplot2::ggplot(data=FactCockleSize,
-                mapping=aes(x=length_mm,y=thickness_mm)) + geom_point()
-#find that other outlier
+               mapping=aes(x=length_mm,y=thickness_mm)) + geom_point()
+# find that other outlier
   FactCockleSize |> dplyr::filter(thickness_mm>10 & length_mm<5)
 # also remove 469 above
 ```
 
+dplyr:
+
+-   filter: select particular rows
+
+-   select: select particular variable columns
+
+-   mutate: transform and calculate variable
+
+-   group_by: make group
+
+-   summarize: creates a new data frame
+
 Further explore the plot with a regression line through all the data
 
 ```{r}
+# plot the data with a regression line
+ggplot2::ggplot(data=FactCockleSize,
+                mapping=aes(x=length_mm,y=thickness_mm)) + 
+  geom_point() + 
+  geom_smooth(method="lm") # added regreesion line
+# calculate a linear regression
+model_lm<-lm(thickness_mm~length_mm, data=FactCockleSize) # line regression where y is explained by x -> correspond it to variables then add from what data it is from with data=
+summary(model_lm)
+# equation: thickness_mm=-0.353+0.669*lenth_mm
+# a cockle of length 20mm has a predicted width of:
+-0.353+0.669*20
+# this regression is significant, R2=0.90, P<0.001 (***)
 ```
 
 Make same plot but showing a separate regression line per year
 
 ```{r}
 # color the points by year, but plot one regression line
+ggplot2::ggplot(data=FactCockleSize,
+                mapping=aes(x=length_mm,y=thickness_mm)) + 
+  geom_point(mapping=aes(col=year)) + # color only applies to this, make color a factor
+  geom_smooth(method="lm")
 ```
 
 Make a panel plot where with each year is shown as a separate graph
 
 ```{r}
+#first method
+drop_na(FactCockleSize) |> #remove missing data
+  ggplot2::ggplot(mapping=aes(x=length_mm,y=thickness_mm)) + 
+  geom_point(mapping=aes(col=year)) + 
+  geom_smooth(method="lm") + 
+  facet_wrap(~year)
+
+ggplot2::ggplot(mapping=aes(x=length_mm,y=thickness_mm)) + 
+  geom_point(mapping=aes(col=year), size=2) + 
+  xlab("cockle length (mm)") + 
+  ylab("cockle width (mm)") + 
+  geom_smooth(method="lm") + 
+  facet_wrap(~year)
 ```
 
 We conclude from this that: \* there were two important outliers in the
