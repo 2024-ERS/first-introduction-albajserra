@@ -10,7 +10,9 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Working with the dplyr and ggplot2 packages
+# 1. Working with the dplyr and ggplot2 packages
+
+### 0.1 How to filter outliers and use ggplot
 
 Load the required libraries :
 
