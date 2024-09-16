@@ -26,8 +26,8 @@ vdat1<-vdat |>
   tidyr::pivot_longer(-c(year,TransectPoint_ID), #c means you choose x column, where -c means not these columns. pivots the chosen columns of a dataset and creates a new table with their corresponding values
                       names_to = "Species_ID", # name of the species variable
                       values_to = "cover") |> #name of the abundance or response variable
-  dplyr::filter(!"Species_ID" %in% c("bare", "litter", "mosses",
-                                 "SalicEur", "SalicPro")) # exclude these. ! in front of any statement, it means the opposite of the command
+  dplyr::filter(!Species_ID %in% c("bare","litter","mosses",
+                                   "SalicEur","SalicPro")) # exclude these. ! in front of any statement, it means the opposite of the command
 
 
 #show the names of all the species in the dataset
