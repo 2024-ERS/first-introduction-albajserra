@@ -32,7 +32,7 @@ dat1<-dat %>%
   dplyr::filter(year==2024, species!='Salicornia.sp')
 dat1
 
-
+# make a plot of the presence of each species along the transect
 dat2<-dat1 %>% 
   dplyr::rename(clay_layer_cm=claydepth_cm) %>%
   dplyr::mutate(sand_layer_cm=100*elevation_m-clay_layer_cm) %>%

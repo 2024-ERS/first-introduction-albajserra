@@ -192,8 +192,13 @@ p1 + geom_line(data = orchdat3,aes(y = pred8), linewidth = 1.2)
 
 anova(m8,m7, test="Chisq") # test if the model is significant
 
-#add the  model to the plot
+#add the  model to the plot (USE MB)
 # calculate the predicted value of m2 for every observation, add to the dataset as a variable as pred2
 # add the new predicted line to the previous plot p2, store as object p3 and show it
-
+p1<-orchdat3 |>
+  ggplot(mapping=aes(x=elevation_m,y=CountSum,col=factor(year))) + # col=year means color by year
+  geom_smooth(method="glm", formula="y ~ x+I(x^2)", method.args=list(family="poisson"),se = F) # add linear model line
+#  geom_point(size=3) # to add points and their size
+p1
+orchdat3
 
