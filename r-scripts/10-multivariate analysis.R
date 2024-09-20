@@ -4,7 +4,7 @@
 remove(list=ls())
 
 library(vegan) # multivariate analysis of ecological community data 
-library(psych) # usefull for panel plots of multivariate datasets
+library(psych) # useful for panel plots of multivariate datasets
 library(tidyverse)
 
 # read the vegetation data
