@@ -32,10 +32,10 @@ data <- data.frame()
 for (block in 1:3) {
   for (treatment in 1:4) {
     # Calculate the mean for this block-treatment combination, only for block 1 and 2
-      if(block==1) {mean_value <- treatment * treatment_effect1[treatment] + block_means[block]}
-      else if(block==2) {mean_value <- treatment * treatment_effect2[treatment] + block_means[block]}
-      else  {mean_value <- treatment * treatment_effect3[treatment] + block_means[block]}    
-
+    if(block==1) {mean_value <- treatment * treatment_effect1[treatment] + block_means[block]}
+    else if(block==2) {mean_value <- treatment * treatment_effect2[treatment] + block_means[block]}
+    else  {mean_value <- treatment * treatment_effect3[treatment] + block_means[block]}    
+    
     # Generate random values for each treatment level within the block
     values <- rnorm(n, mean = mean_value, sd = 5)
     
@@ -56,15 +56,27 @@ head(data)
 
 
 # show in a scatter plot
+data |> 
+  ggplot(aes(x=Treatment,y=Value,color=Block)) +
+  geom_jitter(width = 0.15) +
+  geom_smooth(method="lm",fill=NA)
 
 
+
+# not correct: just treat block as if it is fixed, but it is random
+m1<-lm(Value~Treatment+Block+Treatment:Block,data=data)
+anova(m1)
 
 # find the best model describing the effects of treatment and block
 # block is a random effect, treatment is a fixed effect
 
-
-
 #using lme4, show a mixed model with fixed slopes (=effect of the treatment within each block) and random intercepts
+model1<-lmerTest::lmer(Value~Treatment + (1|Block),data=data)
+summary(model1)
+coef(model1) # slope of treatment is the same for every block
+ggplot(data,aes(x=Treatment,y=Value,color=Block)) +
+  geom_jitter(width=0.15) +
+  geom_line(aes(y=predict(model1)), size=1)
 
 
 #using lme4, show a mixed model with random slopes and random intercepts
@@ -73,4 +85,14 @@ head(data)
 # note that the effect of treatment is now also shown as a random effect 
 
 # plot this model with the data as points using ggplot and predicted values
+model2<-lmerTest::lmer(Value~Treatment + (Treatment|Block),data=data)
+summary(model2)
+coef(model2) # slope of treatment is the same for every block
+ggplot(data,aes(x=Treatment,y=Value,color=Block)) +
+  geom_jitter(width=0.15) +
+  geom_line(aes(y=predict(model2)), size=1)
+
+# compare the models using Akaike's Information Criteria (AIC)
+# if at least value 2 lower, then often signifcanlty different
+anova(model1,model2)
 

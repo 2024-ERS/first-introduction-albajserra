@@ -49,10 +49,10 @@ redox<-readr::read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vQyEg6Kz
   dplyr::filter(Year==2023,TransectPoint_ID<=1150) %>%
   dplyr::group_by(TransectPoint_ID,ProbeDepth) %>%
   dplyr::summarize(redox_mV=mean(redox_raw2_mV,na.rm=T)) %>%
-  tidyr::pivot_wider(id_cols=TransectPoint_ID,
-                     names_from=ProbeDepth,
-                     names_prefix = "redox",
-                     values_from = redox_mV)
+  tidyr::pivot_wider(id_cols=TransectPoint_ID, # the column to keep as row names
+                     names_from=ProbeDepth, # the columns to pivot
+                     names_prefix = "redox", # add a prefix to the new column names
+                     values_from = redox_mV) # pivot the data from long to wide format
 redox
 
 ##### merge elevation, clay thickness, flooding proportion and distance to gulley data in
@@ -191,7 +191,7 @@ vegan::ordisurf(cca2,envdat$DistGulley_m,add=T,col="green") # add a contour surf
 # for example - test this if you would have only measured clay thickness
 # yes, clay thickness significantly affects vegetation composition
 
-##### cluster analysis (classification) of  communities --> USE THIS FOR MY DATASET
+##### cluster analysis (classification) of communities --> USE THIS FOR MY DATASET
 # first calculate a dissimilarity matrix, using Bray-Curtis dissimilarity
 d<-vegan::vegdist(vegdat,method="bray")
 
